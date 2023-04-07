@@ -2,6 +2,8 @@ import type { ChatRequest, ChatReponse } from "./api/openai/typing";
 import { Message, ModelConfig, useAccessStore, useChatStore } from "./store";
 import { showToast } from "./components/ui-lib";
 
+import Locale from "./locales";
+
 const TIME_OUT_MS = 30000;
 
 const makeRequestParam = (
