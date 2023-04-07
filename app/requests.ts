@@ -60,6 +60,7 @@ export function requestOpenaiClient(path: string) {
 
 export async function requestChat(messages: Message[]) {
   const req: ChatRequest = makeRequestParam(messages, { filterBot: true });
+  console.log("[RequestChat] ", req);
 
   const res = await requestOpenaiClient("v1/chat/completions")(req);
 
@@ -164,6 +165,7 @@ export async function requestChatStream(
       options?.onController?.(controller);
 
       while (true) {
+        console.log("Now in ChatStream loop");
         // handle time out, will stop if no response in 10 secs
         const resTimeoutId = setTimeout(() => finish(), TIME_OUT_MS);
         const content = await reader?.read();
@@ -181,8 +183,9 @@ export async function requestChatStream(
 
       finish();
     } else if (res.status === 401) {
-      console.error("Anauthorized");
-      options?.onError(new Error("Anauthorized"), res.status);
+      console.error("Unauthorized");
+      responseText = Locale.Error.Unauthorized;
+      finish();
     } else {
       console.error("Stream Error", res.body);
       options?.onError(new Error("Stream Error"), res.status);

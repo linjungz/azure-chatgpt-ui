@@ -12,6 +12,7 @@ import GithubIcon from "../icons/github.svg";
 import ChatGptIcon from "../icons/chatgpt.svg";
 
 import BotIcon from "../icons/bot.svg";
+import UserIcon from "../icons/user-svg.svg";
 import AddIcon from "../icons/add.svg";
 import LoadingIcon from "../icons/three-dots.svg";
 import CloseIcon from "../icons/close.svg";
@@ -118,9 +119,13 @@ function _Home() {
         className={styles.sidebar + ` ${showSideBar && styles["sidebar-show"]}`}
       >
         <div className={styles["sidebar-header"]}>
-          <div className={styles["sidebar-title"]}>ChatGPT Next</div>
+          <div className={styles["sidebar-title"]}>
+            {" "}
+            {process.env.NEXT_PUBLIC_TITLE ?? "Jarvis"}
+          </div>
           <div className={styles["sidebar-sub-title"]}>
-            Build your own AI assistant.
+            {process.env.NEXT_PUBLIC_SUB_TITLE ??
+              "Using GPT-4 in Azure OpenAI Service"}
           </div>
           <div className={styles["sidebar-logo"]}>
             <ChatGptIcon />

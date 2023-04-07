@@ -29,6 +29,12 @@ async function createStream(req: NextRequest) {
           }
           try {
             const json = JSON.parse(data);
+            //For Azure OpenAI, no [Done] message is received. I don't know why...
+            //So need to check the finish_reason. If it is not null, it means the streaming is done.
+            if (json.choices[0].finish_reason != null) {
+              controller.close();
+              return;
+            }
             const text = json.choices[0].delta.content;
             const queue = encoder.encode(text);
             controller.enqueue(queue);

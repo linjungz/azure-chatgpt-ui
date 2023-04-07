@@ -339,11 +339,12 @@ export const useChatStore = create<ChatStore>()(
       },
 
       onNewMessage(message) {
+        console.log("Get New Message: ", message);
         get().updateCurrentSession((session) => {
           session.lastUpdate = new Date().toLocaleString();
         });
-        get().updateStat(message);
-        get().summarizeSession();
+        // get().updateStat(message);
+        // get().summarizeSession();
       },
 
       async onUserInput(content) {
@@ -442,6 +443,17 @@ export const useChatStore = create<ChatStore>()(
         const recentMessages = context.concat(
           messages.slice(Math.max(0, n - config.historyMessageCount)),
         );
+
+        //Add system prompt
+        if (process.env.NEXT_PUBLIC_SYSTEM_PROMPT != undefined) {
+          const systemMessage: Message = {
+            content: `${process.env.NEXT_PUBLIC_SYSTEM_PROMPT}`,
+            role: "system",
+            date: "",
+          };
+
+          recentMessages.unshift(systemMessage);
+        }
 
         return recentMessages;
       },
